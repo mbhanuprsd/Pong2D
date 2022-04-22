@@ -9,7 +9,6 @@ public class BallController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(3, 3), ForceMode2D.Impulse);
         bottomCenterPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0, Camera.main.nearClipPlane));
     }
 
@@ -17,6 +16,7 @@ public class BallController : MonoBehaviour
     {
         if (transform.position.y <= bottomCenterPosition.y)
         {
+            PongEvents.current.BallScreenExit();
             ResetBall();
         }
     }
