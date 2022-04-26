@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    float paddleSpeed = 5.0f;
+
+    void FixedUpdate()
     {
-        
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            int direction = (touch.position.x > (Screen.width / 2)) ? 1 : -1;
+            MovePaddle(direction);
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
+    void MovePaddle(int direction)
     {
-        
+        float xPos = transform.position.x + (direction * Time.deltaTime * paddleSpeed);
+        float playerPosX = Mathf.Clamp(xPos, Screen.width*(-0.5f)+transform.localScale.y, Screen.width * 0.5f - transform.localScale.y);
+        transform.position = new Vector3(playerPosX, transform.position.y, transform.position.z);
     }
 }

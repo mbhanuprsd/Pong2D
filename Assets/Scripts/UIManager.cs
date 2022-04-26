@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -5,11 +7,16 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     LevelSetup levelSetup;
 
+    [SerializeField]
+    GameObject MainCanvas, InGameCanvas;
+
+    [SerializeField]
+    TMPro.TextMeshProUGUI scoreText, playerWonText;
+
     private const int MaxLives = 3;
 
-    public int Lives = MaxLives;
-    public int Score = 0;
-    public int Level = 1;
+    private int Lives = MaxLives;
+    private static int Score = 0;
 
     enum GAME_STATE
     {
@@ -22,6 +29,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         PongEvents.current.OnBallScreenExit += UpdateLives;
+        PongEvents.current.OnBrickHit += UpdateScore;
     }
 
     public void StartGame()
@@ -41,24 +49,56 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void UpdateScore()
+    {
+        Score++;
+        scoreText.text = "Score: " + Score;
+
+        if (Score == levelSetup.GetBrickCount())
+        {
+            UpdateUI(GAME_STATE.GAMEOVER);
+        }
+    }
+
     private void UpdateUI(GAME_STATE gameState)
     {
         switch(gameState)
         {
             case GAME_STATE.INITIAL:
-                gameObject.SetActive(true);
+                MainCanvas.SetActive(true);
+                InGameCanvas.SetActive(false);
                 Lives = 3;
+                Score = 0;
                 break;
             case GAME_STATE.IN_GAME:
-                gameObject.SetActive(false);
+                MainCanvas.SetActive(false);
+                InGameCanvas.SetActive(true);
+                Score = 0;
+                scoreText.text = "Score: " + Score;
+                playerWonText.text = "";
                 break;
             case GAME_STATE.GAMEOVER:
-                gameObject.SetActive(true);
-                levelSetup.DisableLevel();
-                Lives = 3;
+                playerWonText.text = Score == levelSetup.GetBrickCount() ? "You Won!" : "You Lost!";
+                StartCoroutine(DelayGameOver(3.0f));
                 break;
             default:
                 break;
         }
+    }
+
+    IEnumerator DelayGameOver(float delayTime)
+    {
+        levelSetup.DisableLevel();
+        //Wait for the specified delay time before continuing.
+        yield return new WaitForSeconds(delayTime);
+
+        MainCanvas.SetActive(true);
+        InGameCanvas.SetActive(false);
+        Lives = 3;
+    }
+
+    internal static int GetScore()
+    {
+        return Score;
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
@@ -24,5 +22,14 @@ public class BallController : MonoBehaviour
     private void ResetBall()
     {
         transform.position = Vector3.zero;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Brick"))
+        {
+            collision.gameObject.SetActive(false);
+            PongEvents.current.BrickHit();
+        }
     }
 }

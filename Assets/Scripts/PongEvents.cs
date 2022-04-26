@@ -16,4 +16,11 @@ public class PongEvents : MonoBehaviour
     {
         OnBallScreenExit?.Invoke();
     }
+
+    public event Action OnBrickHit;
+
+    public void BrickHit()
+    {
+        OnBrickHit?.Invoke();
+    }
 }

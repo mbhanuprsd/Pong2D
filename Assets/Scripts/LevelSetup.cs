@@ -39,6 +39,10 @@ public class LevelSetup : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().Sleep();
         ToggleGameObjectsState(false);
     }
+    public int GetBrickCount()
+    {
+        return bricks.Count;
+    }
 
     private void ToggleGameObjectsState(bool active)
     {
