@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,10 +9,13 @@ public class LevelSetup : MonoBehaviour
     private List<GameObject> bricks;
 
     [SerializeField]
-    int numberOfLayers = 2;
+    int numberOfLayers = 2, forceIntensity = 3;
 
     private float ScreenWidth, ScreenHeight;
 
+    /// <summary>
+    /// Update the bricks and visibility of elements
+    /// </summary>
     private void Start()
     {
         bricks = new List<GameObject>();
@@ -25,6 +27,9 @@ public class LevelSetup : MonoBehaviour
         ToggleGameObjectsState(false);
     }
 
+    /// <summary>
+    /// Spawns the elements in th elevel and intializes ball physics
+    /// </summary>
     public void SpawnLevel()
     {
         ToggleGameObjectsState(true);
@@ -34,16 +39,24 @@ public class LevelSetup : MonoBehaviour
         InitializePlayer();
     }
 
+    /// <summary>
+    /// Updates the ball state and elements on game over
+    /// </summary>
     public void DisableLevel()
     {
         ball.GetComponent<Rigidbody2D>().Sleep();
         ToggleGameObjectsState(false);
     }
+
     public int GetBrickCount()
     {
         return bricks.Count;
     }
 
+    /// <summary>
+    /// Toggles the visibility of game objects based on boolen
+    /// </summary>
+    /// <param name="active"></param>
     private void ToggleGameObjectsState(bool active)
     {
         ball.SetActive(active);
@@ -57,11 +70,29 @@ public class LevelSetup : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes the ball position and initial force applied to it.
+    /// </summary>
     private void InitializeBall()
     {
         ball.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         ball.GetComponent<Rigidbody2D>().WakeUp();
-        ball.GetComponent<Rigidbody2D>().AddForce(new(4, 4), ForceMode2D.Impulse);
+        Vector2 randomForce = CreateRandomForce();
+        ball.GetComponent<Rigidbody2D>().AddForce(randomForce, ForceMode2D.Impulse);
+    }
+
+    /// <summary>
+    /// Creates random force with magnitude of force intensity provided
+    /// </summary>
+    /// <returns>2D force vector with random direction</returns>
+    private Vector2 CreateRandomForce()
+    {
+        float randomX = Random.Range(-1.0f, 1.0f);
+        float randomY = Random.Range(-1.0f, 1.0f);
+        Vector2 randomForce = new(randomX, randomY);
+        randomForce.Normalize();
+        randomForce *= forceIntensity;
+        return randomForce;
     }
 
     /// <summary>
@@ -84,6 +115,9 @@ public class LevelSetup : MonoBehaviour
         topWall.transform.localScale = new(0.1f, ScreenWidth, 1);
     }
 
+    /// <summary>
+    /// Updates the player position and scale
+    /// </summary>
     private void InitializePlayer()
     {
         Vector3 playerInitialPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, Camera.main.nearClipPlane));

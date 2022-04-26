@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -32,12 +31,18 @@ public class UIManager : MonoBehaviour
         PongEvents.current.OnBrickHit += UpdateScore;
     }
 
+    /// <summary>
+    /// Setup the level to play
+    /// </summary>
     public void StartGame()
     {
         UpdateUI(GAME_STATE.IN_GAME);
         levelSetup.SpawnLevel();
     }
 
+    /// <summary>
+    /// Update lives and check game over condition if lives become zero
+    /// </summary>
     private void UpdateLives()
     {
         if (Lives > 1)
@@ -45,10 +50,12 @@ public class UIManager : MonoBehaviour
         else
         {
             UpdateUI(GAME_STATE.GAMEOVER);
-            Lives = MaxLives;
         }
     }
 
+    /// <summary>
+    /// Update score and check game over condition if completed breaking all bricks
+    /// </summary>
     private void UpdateScore()
     {
         Score++;
@@ -60,6 +67,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Update the UI based on the game state
+    /// </summary>
+    /// <param name="gameState">Status of game</param>
     private void UpdateUI(GAME_STATE gameState)
     {
         switch(gameState)
@@ -67,7 +78,7 @@ public class UIManager : MonoBehaviour
             case GAME_STATE.INITIAL:
                 MainCanvas.SetActive(true);
                 InGameCanvas.SetActive(false);
-                Lives = 3;
+                Lives = MaxLives;
                 Score = 0;
                 break;
             case GAME_STATE.IN_GAME:
@@ -78,7 +89,6 @@ public class UIManager : MonoBehaviour
                 playerWonText.text = "";
                 break;
             case GAME_STATE.GAMEOVER:
-                playerWonText.text = Score == levelSetup.GetBrickCount() ? "You Won!" : "You Lost!";
                 StartCoroutine(DelayGameOver(3.0f));
                 break;
             default:
@@ -86,15 +96,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="delayTime"></param>
+    /// <returns></returns>
     IEnumerator DelayGameOver(float delayTime)
     {
+        playerWonText.text = Score == levelSetup.GetBrickCount() ? "You Won!" : "You Lost!";
         levelSetup.DisableLevel();
         //Wait for the specified delay time before continuing.
         yield return new WaitForSeconds(delayTime);
 
         MainCanvas.SetActive(true);
         InGameCanvas.SetActive(false);
-        Lives = 3;
+        Lives = MaxLives;
     }
 
     internal static int GetScore()

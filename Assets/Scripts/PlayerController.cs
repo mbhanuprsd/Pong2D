@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -19,10 +17,17 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Move the player paddle using touch 
+    /// Touch on left side of screen moves the paddle to left and vice versa
+    /// </summary>
+    /// <param name="direction">Left/Right direction of touch</param>
     void MovePaddle(int direction)
     {
+        float leftThreshold = Camera.main.ViewportToWorldPoint(new Vector3(0.0f, 0.1f, Camera.main.nearClipPlane)).x;
+        float rightThreshold = Camera.main.ViewportToWorldPoint(new Vector3(1.0f, 0.1f, Camera.main.nearClipPlane)).x;
         float xPos = transform.position.x + (direction * Time.deltaTime * paddleSpeed);
-        float playerPosX = Mathf.Clamp(xPos, Screen.width*(-0.5f)+transform.localScale.y, Screen.width * 0.5f - transform.localScale.y);
+        float playerPosX = Mathf.Clamp(xPos, leftThreshold+transform.localScale.y, rightThreshold - transform.localScale.y);
         transform.position = new Vector3(playerPosX, transform.position.y, transform.position.z);
     }
 }

@@ -10,6 +10,9 @@ public class PongEvents : MonoBehaviour
         current = this;
     }
 
+    /// <summary>
+    /// Event called when ball exits screen
+    /// </summary>
     public event Action OnBallScreenExit;
 
     public void BallScreenExit()
@@ -17,6 +20,9 @@ public class PongEvents : MonoBehaviour
         OnBallScreenExit?.Invoke();
     }
 
+    /// <summary>
+    /// Event called when the ball hits the brick
+    /// </summary>
     public event Action OnBrickHit;
 
     public void BrickHit()
