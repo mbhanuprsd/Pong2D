@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
         transform.SetPositionAndRotation(playerInitialPosition, Quaternion.Euler(0, 0, 90));
 
         PongUtility.ScreenResolution screenResolution = PongUtility.GetScreenResolution();
-        transform.localScale = new(screenResolution.Height / 32.0f, screenResolution.Width / 8.0f, 1);
+        transform.localScale = new(screenResolution.Height / 40.0f, screenResolution.Width / 8.0f, 1);
     }
 
     void FixedUpdate()
