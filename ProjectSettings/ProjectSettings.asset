@@ -64,8 +64,8 @@ PlayerSettings:
   use32BitDisplayBuffer: 1
   preserveFramebufferAlpha: 0
   disableDepthAndStencilBuffers: 0
-  androidStartInFullscreen: 1
-  androidRenderOutsideSafeArea: 1
+  androidStartInFullscreen: 0
+  androidRenderOutsideSafeArea: 0
   androidUseSwappy: 0
   androidBlitType: 0
   androidResizableWindow: 0
@@ -243,7 +243,7 @@ PlayerSettings:
   useCustomBaseGradleTemplate: 0
   useCustomGradlePropertiesTemplate: 0
   useCustomProguardFile: 0
-  AndroidTargetArchitectures: 1
+  AndroidTargetArchitectures: 15
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
@@ -663,7 +663,8 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   additionalCompilerArguments: {}
   platformArchitecture: {}
-  scriptingBackend: {}
+  scriptingBackend:
+    Android: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}

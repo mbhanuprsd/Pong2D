@@ -17,7 +17,7 @@ public class BoundaryController : MonoBehaviour
     bool enableCollision = true;
 
     public SIDE WallSide { get => wallSide; set => wallSide = value; }
-
+    private float WallWidthRatio = 1/30.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,21 +35,21 @@ public class BoundaryController : MonoBehaviour
         {
             case SIDE.LEFT:
                 wallPosition = Camera.main.ViewportToWorldPoint(new Vector3(0, 0.5f, Camera.main.nearClipPlane));
-                wallScale = new Vector3(resolution.Width / 20.0f, resolution.Height, 1);
+                wallScale = new Vector3(resolution.Width * WallWidthRatio, resolution.Height, 1);
                 break;
             case SIDE.RIGHT:
                 wallPosition = Camera.main.ViewportToWorldPoint(new Vector3(1, 0.5f, Camera.main.nearClipPlane));
-                wallScale = new Vector3(resolution.Width / 20.0f, resolution.Height, 1);
+                wallScale = new Vector3(resolution.Width* WallWidthRatio, resolution.Height, 1);
                 break;
             case SIDE.TOP:
                 wallPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1, Camera.main.nearClipPlane));
                 wallRotation = Quaternion.Euler(0, 0, 90);
-                wallScale = new Vector3(resolution.Width / 20.0f, resolution.Width, 1);
+                wallScale = new Vector3(resolution.Width * WallWidthRatio, resolution.Width, 1);
                 break;
             case SIDE.BOTTOM:
                 wallPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0, Camera.main.nearClipPlane));
                 wallRotation = Quaternion.Euler(0, 0, 90);
-                wallScale = new Vector3(resolution.Width / 20.0f, resolution.Width, 1);
+                wallScale = new Vector3(resolution.Width * WallWidthRatio, resolution.Width, 1);
                 enableCollision = false;
                 break;
             default:

@@ -12,6 +12,13 @@ public class PongUtility : MonoBehaviour
         PongEvents.current.OnBallScreenExit += UpdateLives;
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PongEvents.current.GameOver(false);
+        }
+    }
     /// <summary>
     /// Setup the level to play
     /// </summary>

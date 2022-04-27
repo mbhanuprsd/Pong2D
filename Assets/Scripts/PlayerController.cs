@@ -23,14 +23,17 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+#if UNITY_IOS || UNITY_ANDROID
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-
             int direction = (touch.position.x > (Screen.width / 2)) ? 1 : -1;
             MovePaddle(direction);
         }
-
+#else
+        int direction = (int)Input.GetAxisRaw("Horizontal");
+        MovePaddle(direction);
+#endif
     }
 
     /// <summary>
