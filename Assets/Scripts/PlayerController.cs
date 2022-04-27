@@ -5,6 +5,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float paddleSpeed = 5.0f;
 
+    void Start()
+    {
+        ResetPlayer();
+    }
+
+    void ResetPlayer()
+    {
+        gameObject.SetActive(true);
+
+        Vector3 playerInitialPosition = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, Camera.main.nearClipPlane));
+        transform.SetPositionAndRotation(playerInitialPosition, Quaternion.Euler(0, 0, 90));
+
+        PongUtility.ScreenResolution screenResolution = PongUtility.GetScreenResolution();
+        transform.localScale = new Vector3(screenResolution.Width / 24.0f, screenResolution.Width / 8.0f, 1);
+    }
+
     void FixedUpdate()
     {
         if (Input.touchCount > 0)
@@ -27,7 +43,7 @@ public class PlayerController : MonoBehaviour
         float leftThreshold = Camera.main.ViewportToWorldPoint(new Vector3(0.0f, 0.1f, Camera.main.nearClipPlane)).x;
         float rightThreshold = Camera.main.ViewportToWorldPoint(new Vector3(1.0f, 0.1f, Camera.main.nearClipPlane)).x;
         float xPos = transform.position.x + (direction * Time.deltaTime * paddleSpeed);
-        float playerPosX = Mathf.Clamp(xPos, leftThreshold+transform.localScale.y, rightThreshold - transform.localScale.y);
+        float playerPosX = Mathf.Clamp(xPos, leftThreshold + transform.localScale.y, rightThreshold - transform.localScale.y);
         transform.position = new Vector3(playerPosX, transform.position.y, transform.position.z);
     }
 }

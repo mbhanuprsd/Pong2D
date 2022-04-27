@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Brick
   - Score
+  - Wall
+  - Ball
   layers:
   - Default
   - TransparentFX
